@@ -17,7 +17,7 @@ public class UserDaoHibernateImpl implements UserDao {
                 "age TINYINT)";
         try (Session session = Util.getSessionFactory().openSession()) {
             Transaction tx = session.beginTransaction();
-            session.createNativeQuery(sql, User.class).executeUpdate();
+            session.createNativeQuery(sql).executeUpdate();
             tx.commit();
         }
     }
@@ -27,7 +27,7 @@ public class UserDaoHibernateImpl implements UserDao {
         String sql = "DROP TABLE IF EXISTS users";
         try (Session session = Util.getSessionFactory().openSession()) {
             Transaction tx = session.beginTransaction();
-            session.createNativeQuery(sql, User.class).executeUpdate();
+            session.createNativeQuery(sql).executeUpdate();
             tx.commit();
         }
     }
@@ -56,7 +56,10 @@ public class UserDaoHibernateImpl implements UserDao {
     @Override
     public List<User> getAllUsers() {
         try (Session session = Util.getSessionFactory().openSession()) {
-            return session.createQuery("from User", User.class).list();
+            Transaction tx = session.beginTransaction();
+            List<User> users = session.createQuery("from User", User.class).list();
+            tx.commit();
+            return users;
         }
     }
 
