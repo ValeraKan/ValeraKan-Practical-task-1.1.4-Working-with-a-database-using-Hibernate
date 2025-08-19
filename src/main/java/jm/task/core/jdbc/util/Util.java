@@ -42,5 +42,5 @@ public class Util {
                     .buildSessionFactory();
         }
         return sessionFactory;
-    }// реализуйте настройку соеденения с БД
+    }
 }
